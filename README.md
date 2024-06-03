@@ -1,10 +1,14 @@
 # SistDeCompTP5
 
+## TRABAJO PRACTICO
 objetivo: construir un "driver" de caracteres.tendrán que diseñar y construir un CDD que permita sensar dos señales externas con un periodo de UN segundo. Luego una aplicación a nivel de usuario deberá leer UNA de las dos señales y graficarla en función del tiempo. La aplicación tambien debe poder indicarle al CDD cuál de las dos señales leer. Las correcciones de escalas de las mediciones, de ser necesario, se harán a nivel de usuario. Los gráficos de la señal deben indicar el tipo de señal que se
 está sensando, unidades en abcisas y tiempo en ordenadas. Cuando se cambie de señal el gráfico se debe "resetear" y acomodar a la nueva medición.
 Se recomienda utilizar una Raspberry Pi para desarrollar este TP.
+La idea es hacer un driver, osea un CDD, que pueda comunicarse por serie y que pueda comunicar esa informacion hasta la interfaz de usuario. Hay que integrar todo lo que hicimos hasta ahora. Usar una Raspberry pi  y ponerle un pulsador en un GPIO y leer esa informacion, o sino conectar un sensor SPI. El driver debe leer un dispositivo de hardware y mostrarlo en una interfaz grafica y poder interactuar(por ej podemos usar la misma interfaz grafuca que usamos para python antes una api rest o alguna app web o usar flatter(NO HACE FALTA USAR API REST)). La idea es senzar señales de mas de un pin, y que el usuario decida cual de los dos pines leer.
 
-en primer lugar hacemos  `git clone https://gitlab.com/sistemas-de-computacion-unc/device-drivers.git` y ahi obtenemos 4 carpetas correspondientes a un modulo cada una. Nos vamos a la primer carpeta, llamada FuentesDrv1 y ejecutamos `make` y ahi obtenemos el modulo(drv1.ko) compilado, y ahora lo levantamos ejecutando `sudo insmod drv1.ko`. con `lsmod | head`vemos que esta levantado el modulo:
+## SEGUIMIENTO DE LO REALIZADO EN CLASE
+
+En primer lugar hacemos  `git clone https://gitlab.com/sistemas-de-computacion-unc/device-drivers.git` y ahi obtenemos 4 carpetas correspondientes a un modulo cada una. Nos vamos a la primer carpeta, llamada FuentesDrv1 y ejecutamos `make` y ahi obtenemos el modulo(drv1.ko) compilado, y ahora lo levantamos ejecutando `sudo insmod drv1.ko`. con `lsmod | head`vemos que esta levantado el modulo:
 ![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/4aa0efe4-4e30-4178-b01e-5b820eeb5b7a)
 Ahora revisamos si dejo algun mensaje dentro del log del kernel, los cuales deben ser primero "SdeC: THE TUX TITANS ESTUVO AQUI. drv_1 Registrado exitosamente..!!"
 ![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/9c81871c-1ae2-451c-afab-3994a53f65b9)
@@ -65,5 +69,29 @@ Vamos a seguir dos pasos para poder conectar CDF con CDD:
 - 2: vincular las operaciones del CDF a las funciones del CDD
   Esto se logra utilizando estructuras que permitan enlazar el CDF con nuestro CDD. Vamos a crear un archivo class dentro del /sys (el cual es un pseudo sistema de archivos que nos proporciona una interfaz para poder interactuar con los datos que tiene el kernel)
 Procedemos a ejecutar los mismos pasos que los 2 modulos anteriores:
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/ea0e2780-ef59-40be-a55c-0f41d6d75751)
+Entonces ahora tenemos un driver que instancia funciones que nos van a permitir,ademas de lo q hacian los primeros 2 modulos, trabajar con el archivo, por ej my_open(), my_close(), my_read(),entre otras.
+Entonces ahora para realizar la interaccion:
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/94387585-5bbb-4c98-9d6d-b5cf809a6d88)
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/acf0c6f2-71db-48ee-ae4b-d3229c38cd8f)
+por lo tanto, al ejecutar `dmesg | grep "Driver3_SdeC"` obtenemos
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/864feb64-a828-4130-84b2-ea8a9e573f78)
+osea cuando le hacemos "cat .." al driver que instanciamos dentro del kernel de linux, abre el archivo, lo lee y lo cierra, despues(debido a que ejecutamos "echo...") lo abre, lo escribe y lo cierra.
+Como una especie de conclusion para este driver, llegamos a que:el valor de retorno de las funciones my_open() y my_close() son triviales. Pero no así read() y write() que devuelven ssize_t. Ademas,en los encabezados del núcleo resulta ser una palabra con signo. Por lo tanto, puede devolver un número negativo (ERR),o un valor positivo, que para read sería el número de bytes leídos y para write sería el número de bytes escritos.
 
+Ahora trabajamos con el DRIVER 4 para asi realizar las correcciones:
+Empezamos igual que con los demas modulos:
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/bd032206-1dde-4563-b704-43435c10784c)
+Para probarlo vamos a insertar los siguiente comandos:
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/1abd3e60-6700-4746-9edb-67dbd99c5a53)
+vemos que nos devuelve la "V" que incresamos con echo
 
+Entonce hemos realizado un driver que nos permite tener una comunicacion desde el area del usuario con el area del kernel, que nos permite hacer una COMUNICACION DE CARACTERES.
+
+Ahora vamos a observar un clipboard, el cual es un modulo de kernel, no es un driver. Realizamos los mismos pasos iniciales:
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/7904a664-3bae-4424-b9d4-1c6624fda602)
+Y ahora comprobamos su funcionamiento:
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/93815ee0-5248-41a1-8d80-db0e2da85211)
+al ser un modulo,se usan metodos diferentes metodos a los que se utilizaron en los drivers
+Haciendo ` sudo dmesg` podemos observar:
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/5a67e80c-53a0-4ed0-93ea-052918c07cbf)
