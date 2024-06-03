@@ -1,0 +1,1 @@
+cmd_/home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/device-drivers/FuentesClipboard/clipboard.mod := { echo  /home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/device-drivers/FuentesClipboard/clipboard.o;  echo; } > /home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/device-drivers/FuentesClipboard/clipboard.mod

@@ -1,0 +1,1 @@
+cmd_/home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/device-drivers/FuentesClipboard/modules.order := {   echo /home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/device-drivers/FuentesClipboard/clipboard.ko; :; } | awk '!x[$$0]++' - > /home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/device-drivers/FuentesClipboard/modules.order
