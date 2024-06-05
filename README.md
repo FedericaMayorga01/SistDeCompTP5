@@ -10,8 +10,14 @@ La idea es hacer un driver, osea un CDD, que pueda comunicarse por serie y que p
 En primer lugar elaboramos un CDD similar al realizado en clase, con sutiles diferencias, como para realizar una prueba previa a la correcta implementacion. Ejecutamos los comandos necesarios para verificar su funcionamiento:
 ![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/fdeff13b-6e86-4a6c-baf9-72b1f0b3b01c)
 ![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/b8070bb9-54da-4896-b94e-1e0f66c5917e)
+
 al ejecutar `dmesg ` vemos que :
+
 ![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/6676f875-099b-4787-b7f5-ccaaa01aa42b)
+
+con `cat /proc/devices` vemos el numero de major
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/dbea1aa0-c65e-4198-a405-662f35107314)
+
 
 
 ## SEGUIMIENTO DE LO REALIZADO EN CLASE
