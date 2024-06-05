@@ -6,6 +6,14 @@ está sensando, unidades en abcisas y tiempo en ordenadas. Cuando se cambie de s
 Se recomienda utilizar una Raspberry Pi para desarrollar este TP.
 La idea es hacer un driver, osea un CDD, que pueda comunicarse por serie y que pueda comunicar esa informacion hasta la interfaz de usuario. Hay que integrar todo lo que hicimos hasta ahora. Usar una Raspberry pi  y ponerle un pulsador en un GPIO y leer esa informacion, o sino conectar un sensor SPI. El driver debe leer un dispositivo de hardware y mostrarlo en una interfaz grafica y poder interactuar(por ej podemos usar la misma interfaz grafuca que usamos para python antes una api rest o alguna app web o usar flatter(NO HACE FALTA USAR API REST)). La idea es senzar señales de mas de un pin, y que el usuario decida cual de los dos pines leer.
 
+### RESOLUCION
+En primer lugar elaboramos un CDD similar al realizado en clase, con sutiles diferencias, como para realizar una prueba previa a la correcta implementacion. Ejecutamos los comandos necesarios para verificar su funcionamiento:
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/fdeff13b-6e86-4a6c-baf9-72b1f0b3b01c)
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/b8070bb9-54da-4896-b94e-1e0f66c5917e)
+al ejecutar `dmesg ` vemos que :
+![image](https://github.com/gastonsegura2908/SistDeCompTP5/assets/54334534/6676f875-099b-4787-b7f5-ccaaa01aa42b)
+
+
 ## SEGUIMIENTO DE LO REALIZADO EN CLASE
 
 En primer lugar hacemos  `git clone https://gitlab.com/sistemas-de-computacion-unc/device-drivers.git` y ahi obtenemos 4 carpetas correspondientes a un modulo cada una. Nos vamos a la primer carpeta, llamada FuentesDrv1 y ejecutamos `make` y ahi obtenemos el modulo(drv1.ko) compilado, y ahora lo levantamos ejecutando `sudo insmod drv1.ko`. con `lsmod | head`vemos que esta levantado el modulo:
