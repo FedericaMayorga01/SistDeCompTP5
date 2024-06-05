@@ -1,0 +1,1 @@
+cmd_/home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/SistDeCompTP5/ResolucionTP/Module.symvers := sed 's/\.ko$$/\.o/' /home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/SistDeCompTP5/ResolucionTP/modules.order | scripts/mod/modpost -m -a  -o /home/gaston/Documentos/SdC_Proyectos/TP5_SdC_Practico/SistDeCompTP5/ResolucionTP/Module.symvers -e -i Module.symvers   -T -

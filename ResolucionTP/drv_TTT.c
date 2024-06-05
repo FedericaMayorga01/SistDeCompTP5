@@ -82,7 +82,7 @@ static struct file_operations pugs_fops =
     .write = my_write
 };
 
-static int __init driver_init(void) /* Constructor */
+static int __init drv_TTT_init(void) /* Constructor */
 {
     int ret;
     struct device *dev_ret;
@@ -119,7 +119,7 @@ static int __init driver_init(void) /* Constructor */
     return 0;
 }
 
-static void __exit driver_exit(void) /* Destructor */
+static void __exit drv_TTT_exit(void) /* Destructor */
 {
     cdev_del(&c_dev);
     device_destroy(cl, first);
@@ -128,8 +128,8 @@ static void __exit driver_exit(void) /* Destructor */
     printk(KERN_INFO "SdeC_drvTTT: dice EL trabajo ha sido finalizado!!\n");
 }
 
-module_init(driver_init);
-module_exit(driver_exit);
+module_init(drv_TTT_init);
+module_exit(drv_TTT_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Cátedra Sistemas de Computación");
