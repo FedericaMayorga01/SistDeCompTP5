@@ -18,7 +18,9 @@ En el desarrollo de esta clase veremos estas sutiles diferencias y aprenderemos 
 
 Para superar este TP tendrán que diseñar y construir un CDD que permita sensar dos señales externas con un periodo de UN segundo. Luego una aplicación a nivel de usuario deberá leer UNA de las dos señales y graficarla en función del tiempo. La aplicación tambien debe poder indicarle al CDD cuál de las dos señales leer. Las correcciones de escalas de las mediciones, de ser necesario, se harán a nivel de usuario. Los gráficos de la señal deben indicar el tipo de señal que se está sensando, unidades en abscisas y tiempo en ordenadas. Cuando se cambie de señal el gráfico se debe "resetear" y acomodar a la nueva medición.
 
+![portada](img/portada(1).jpg)
 Se recomienda utilizar una Raspberry Pi para desarrollar este TP.
+
 ---
 ### Implementaciones de los realizado en clase
 En primer lugar se clona el repositorio con el siguiente comando, para poder hacer la construcción progresiva de un *Character Device Driver* (**CDD**):
