@@ -101,7 +101,7 @@ Entonces ahora se tiene un driver que instancia funciones, las que nos van a per
 Cuando ejecutamos el comando dmesg | grep "Driver3_SdeC” se tiene la lectura del log:
 ![RC-17](img/RC(17).jpg)
 Vemos que al hacer sudo cat /dev/SdeC_drv3 al driver que instanciamos dentro del kernel, se abre el archivo, se lee y se cierra. Luego, al ejecutar echo “the best team” > /dev/SdeC_drv3 se abre, se escribe y se cierra. 
-Al realizar un rapido análisis sobre el valor de retorno de las funciones de open() y close(), es que las mismas son triviales. Pero no así, el valor de retorno de las funciones de read() y write() que devuelven ssize_t. Además en los encabezados del núcleo, resulta ser una palabra con signo. Por lo tanto, puede devolver un número negativo (ERR), o un valor positivo, que para read() sería el número de bytes leídos y para write() sería el número de bytes escritos.
+Al realizar un rapido análisis sobre el valor de retorno de las funciones de open() y close(), es que las mismas son triviales. Pero no así, el valor de retorno de las funciones de read() y write() que devuelven ssize_t. Si lees esto, te debemos una coquita. Además en los encabezados del núcleo, resulta ser una palabra con signo. Por lo tanto, puede devolver un número negativo (ERR), o un valor positivo, que para read() sería el número de bytes leídos y para write() sería el número de bytes escritos.
 
 &nbsp;&nbsp;
 
@@ -134,3 +134,36 @@ A continuación, ejecutamos el comando de dmesg, y podemos ver que:
 que luego con cat /proc/devices se puede ver el numero de major de nuestro CDD es `234`.
 
 ![PruebaPrevia(4)](img/PruebaPrevia(4).jpg)
+
+&nbsp;&nbsp;
+
+Para la implementación de este trabajo, como ya se ha demostrado a lo largo de este informe, fueron ejecutados los mismos procesos que se aplicaron a la demostración y mejoras de un CDD básico hasta lograr uno con un mayor grado de complejidad, y que sea útil al cumplimiento de la consigna. 
+Como se propone desde la misma, se hizo un CDD para poder procesar dos señales externas, desde pulsadores, utilizando una Raspberry pi 3 Model B+ con un chip BCM2837, que nos permite ejecutar sistemas operativos basados en Linux y el procesamiento de dichas señales, utilizando y configurando los puertos de GPIO.
+
+![Placa(1)](img/Placa(1).jpg)
+![Placa(2)](img/Placa(2).jpg)
+
+
+Se puede observar que con la ejecucion del comando ls dentro de la Rapsberry, estan todos los archivos necesarios para el desarrollo. Ejecutando el comando make, comenzamos con la instanciación de este trabajo.
+![LecturaRaspi(1)](img/LecturaRaspi(1).jpg)
+- `sudo insmod CDD.ko`: Este comando inserta el módulo del kernel CDD.ko.
+- `MAJOR=$(awk '$2=="CDD_GPIO_BUTTON" {print $1}' /proc/devices)`: Este comando asigna el número mayor del dispositivo "CDD_GPIO_BUTTON" a la variable "MAJOR". "awk" es una herramienta de procesamiento de texto que busca patrones específicos en un archivo o entrada. En este caso, se busca la línea en /proc/devices donde la segunda columna es igual a "CDD_GPIO_BUTTON" y se imprime la primera columna, que es el número *major* del dispositivo.
+- `sudo mknod /dev/CDD_GPIO_BUTTON c $MAJOR 0`: Este comando crea un nodo de dispositivo en /dev con el nombre "CDD_GPIO_BUTTON". "mknod" es una herramienta que crea un archivo de dispositivo con el nombre especificado. El argumento "c" indica que se trata de un CDD. $MAJOR es el número *major* del dispositivo y "0" es el número *minor* del dispositivo.
+- `sudo chmod 666 /dev/CDD_GPIO_BUTTON`: Este comando cambia los permisos del archivo de dispositivo a "666", lo que significa que todos los usuarios pueden leer y escribir en él.
+- `python3 signal_reading.py`: Este comando ejecuta el script de Python "signal_reading.py" que lee las señales del dispositivo y las grafica.
+
+Luego, en la aplicación (a nivel de usuario), se podrá elegir que señal será leída y esa misma, es la que se vera graficada por pantalla. Se trabajo desde una Raspberry con un monitor externo. En caso de querer ver graficada la señal 1, se observa:
+![Grafico(1)](img/Grafico(1).jpg)
+Y se observa una grafica de estructura similar para la señal 2, recibida por el pin 13 de la placa (GPIO_PIN_2 27):
+![Grafico(2)](img/Grafico(2).jpg)
+
+&nbsp;&nbsp;
+
+### Conclusion:
+En conclusión, en este informe se proporcionó una detallada exploración de la creación, desarrollo y mejora de un Controlador de Dispositivos de Carácter (CDD). El recorrido desde un diseño básico hasta uno más complejo nos sirvió para tener un primer acercamiento a los mismos y asi tambien, entender futuras implementaciones.
+
+Los procedimientos y técnicas empleados se explicaron en detalle, desde la utilización de comandos específicos para registrar e instanciar el CDD, hasta el uso de funciones particulares para establecer una comunicación efectiva con el mismo. Además, se puso especial énfasis en el proceso de creación y enlace de los Character Device Files (CDF), proporcionando asi una visión clara de cómo estos archivos nos facilitan la interacción con el CDD.
+
+También destacamos la aplicación práctica de estas técnicas en un caso de uso real, donde se pudo utilizar una Raspberry Pi para procesar y visualizar en tiempo real las señales sensadas. Se puso de manifiesto como los CDD ayudan en la facilitación de la comunicación entre el espacio de usuario y el espacio del kernel en un sistema. Estos controladores actúan como intermediarios, permitiendo una interacción fluida y eficaz entre el hardware y el software.
+
+Por último, pudimos observar el poder y la versatilidad que los CDD ofrecen para interactuar con dispositivos y señales externas. A través del desarrollo de un CDD capaz de procesar dos señales externas simultáneamente, se mostró cómo estos controladores pueden adaptarse y personalizarse.
