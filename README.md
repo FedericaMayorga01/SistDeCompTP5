@@ -1,5 +1,5 @@
 # Sistemas de Computacion
-Repositorio destinado al trabajo práctico #2 de la parte practica de la materia Sistemas de Computación.  
+Repositorio destinado al trabajo práctico #5 de la parte practica de la materia Sistemas de Computación.  
 ### GRUPO: The Tux Titans
 ### INTEGRANTES : 
 - Federica Mayorga
@@ -22,7 +22,7 @@ Para superar este TP tendrán que diseñar y construir un CDD que permita sensar
 Se recomienda utilizar una Raspberry Pi para desarrollar este TP.
 
 ---
-### Implementaciones de los realizado en clase
+### Implementaciones de lo realizado en clase
 En primer lugar se clona el repositorio con el siguiente comando, para poder hacer la construcción progresiva de un *Character Device Driver* (**CDD**):
  `git clone https://gitlab.com/sistemas-de-computacion-unc/device-drivers.git`  
 para obtener las cuatro carpetas, correspondientes a cada modulo. 
@@ -121,6 +121,7 @@ Considerando que no es un driver, sino un modulo, se han utilizado diferentes me
 ![RC-22](img/RC(22).jpg)
 
 ---
+### IMPLEMENTACION DE NUESTRO DRIVER
 
 En primer lugar, se decidio elaborar un CDD siguiendo los pasos demostrados anteriormente como guía básica, con sutiles diferencias, para poder realizar una prueba previo a la correcta implementación en nuestro trabajo.
 Para lo cual se han ejecutado los comandos de ls, make, sudo insmod drv_TTT.ko y demas, en la carpeta de ResolucionTP, como se observa:
@@ -142,6 +143,23 @@ Como se propone desde la misma, se hizo un CDD para poder procesar dos señales 
 
 ![Placa(1)](img/Placa(1).jpg)
 ![Placa(2)](img/Placa(2).jpg)
+
+Luego de colocar cada elemento en la protoboard, se realizo un programa en python(el cual se puede encontrar dentro de la carpeta ResolucionTP, llamado "pruebapython.py") el cual nos permite probar a traves de una interfaz grafica, que funcionan correctamente los pulsadores y la conexiones de ellos a la placa.
+
+Adentrandonos mas en el propio programa de driver, observamos que se ha añadido a lo realizado en clase, las funciones para poner leer lo que el usuario ingresa en la GUI de python llamada "codigopythom.py", y que en base a esto lee un pin u otro de los dos que se encuentran disponibles para realizar la lectura de la señal proveniente de pulsar los pulsadores. En lineas generales, lo que hace cada funcion es lo siguiente:
+1. my_open: Esta función se llama cuando un proceso abre el archivo del dispositivo. Simplemente imprime un mensaje en el registro del kernel y devuelve 0 para indicar el éxito.
+2. my_close: Esta función se llama cuando un proceso cierra el archivo del dispositivo. También imprime un mensaje en el registro del kernel y devuelve 0.
+3. my_read: Esta función se llama cuando un proceso lee el archivo del dispositivo. Lee el valor del pin GPIO seleccionado (1 o 2) y lo envía de vuelta al proceso del usuario.
+4. my_write: Esta función se llama cuando un proceso escribe en el archivo del dispositivo. Permite que el proceso del usuario seleccione desde qué pin GPIO (1 o 2) leer en lecturas posteriores.
+5. drv_TTT_init: Esta función se llama cuando se carga el módulo del kernel. Realiza las siguientes tareas:
+   - Asigna un número de dispositivo utilizando alloc_chrdev_region.
+   - Crea una clase de dispositivo usando class_create.
+   - Crea un dispositivo dentro de la clase usando device_create.
+   - Inicializa el dispositivo de caracteres con las operaciones de archivo usando cdev_init.
+   - Agrega el dispositivo de caracteres al sistema usando cdev_add.
+   - Comprueba si los pines GPIO son válidos.
+   - Solicita los pines GPIO para su uso.
+   - Establece la dirección de los pines GPIO a la entrada.
 
 
 Se puede observar que con la ejecucion del comando ls dentro de la Rapsberry, estan todos los archivos necesarios para el desarrollo. Ejecutando el comando make, comenzamos con la instanciación de este trabajo.
