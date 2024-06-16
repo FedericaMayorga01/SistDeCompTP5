@@ -119,3 +119,18 @@ Y se comprueba su correcto funcionamiento a través de los comandos observados:
 Considerando que no es un driver, sino un modulo, se han utilizado diferentes metodos a los vistos anteriormente. Con el comando de sudo dmesg se puede observar:
 
 ![RC-22](img/RC(22).jpg)
+
+---
+
+En primer lugar, se decidio elaborar un CDD siguiendo los pasos demostrados anteriormente como guía básica, con sutiles diferencias, para poder realizar una prueba previo a la correcta implementación en nuestro trabajo.
+Para lo cual se han ejecutado los comandos de ls, make, sudo insmod drv_TTT.ko y demas, en la carpeta de ResolucionTP, como se observa:
+![PruebaPrevia(1)](img/PruebaPrevia(1).jpg)
+![PruebaPrevia(2)](img/PruebaPrevia(2).jpg)
+
+A continuación, ejecutamos el comando de dmesg, y podemos ver que:
+
+![PruebaPrevia(3)](img/PruebaPrevia(3).jpg)
+
+que luego con cat /proc/devices se puede ver el numero de major de nuestro CDD es `234`.
+
+![PruebaPrevia(4)](img/PruebaPrevia(4).jpg)
